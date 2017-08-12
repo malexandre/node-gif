@@ -1,6 +1,7 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 const webpack = require('webpack')
+
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
     entry: './app/client/app.js',
@@ -16,18 +17,6 @@ module.exports = {
             query: {
                 presets: ['es2015', 'react']
             }
-        }]
-    },
-    plugins: [
-        new HtmlWebpackPlugin({ 'template': './app/client/index.ejs' }),
-        new webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery',
-            'window.jQuery': 'jquery',
-            Popper: ['popper.js', 'default'],
-            // In case you imported plugins individually, you must also require them here:
-            // Util: "exports-loader?Util!bootstrap/js/dist/util",
-            // Dropdown: "exports-loader?Dropdown!bootstrap/js/dist/dropdown",
         }, {
             test: /\.(scss)$/,
             use: [{
@@ -47,6 +36,28 @@ module.exports = {
             }, {
                 loader: 'sass-loader'
             }]
+        }]
+    },
+    plugins: [
+        new HtmlWebpackPlugin({ 'template': './app/client/index.ejs' }),
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery',
+            'window.jQuery': 'jquery',
+            Popper: ['popper.js', 'default'],
+            Tether: "tether",
+            "window.Tether": "tether",
+            Alert: "exports-loader?Alert!bootstrap/js/dist/alert",
+            Button: "exports-loader?Button!bootstrap/js/dist/button",
+            Carousel: "exports-loader?Carousel!bootstrap/js/dist/carousel",
+            Collapse: "exports-loader?Collapse!bootstrap/js/dist/collapse",
+            Dropdown: "exports-loader?Dropdown!bootstrap/js/dist/dropdown",
+            Modal: "exports-loader?Modal!bootstrap/js/dist/modal",
+            Popover: "exports-loader?Popover!bootstrap/js/dist/popover",
+            Scrollspy: "exports-loader?Scrollspy!bootstrap/js/dist/scrollspy",
+            Tab: "exports-loader?Tab!bootstrap/js/dist/tab",
+            Tooltip: "exports-loader?Tooltip!bootstrap/js/dist/tooltip",
+            Util: "exports-loader?Util!bootstrap/js/dist/util",
         })
-      ]
-};
+    ]
+}
