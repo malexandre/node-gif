@@ -20,10 +20,10 @@ emojiSearch = (query, offset, callback) => {
     let emojis = []
 
     Object.keys(emojilib.lib).forEach(key => {
-        let match = key.includes(req.params.query)
+        let match = key.includes(query)
 
         if (!match) {
-            match = emojilib.lib[key].keywords.find(word => word.includes(req.params.query)) !== undefined
+            match = emojilib.lib[key].keywords.find(word => word.includes(query)) !== undefined
         }
 
         if (match) {
@@ -50,7 +50,7 @@ module.exports.searchHandler = (req, res) => {
         searchFn = emojiSearch
     }
 
-    searchFn(req.params.query, offset, ({ items, more}) => res.json({
+    searchFn(req.params.query, offset, ({ items, more }) => res.json({
         items: items,
         nextPage: more ? nextPage : undefined
     }))

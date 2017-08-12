@@ -15,6 +15,7 @@ module.exports.run = () => {
     app.use(authMiddleware)
     app.use(bodyParser.urlencoded({ extended: true }))
     app.use(bodyParser.json())
+    app.use('/', express.static('app/client/dist/'));
 
     app.get('/api/:type/search/:query', searchHandler)
     app.get('/api/:type/favorite', authWrapper(listFavoritesHandler))
