@@ -1,25 +1,9 @@
 import React, { Component } from 'react'
-import { Route, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+
+import NavItem from './nav-item'
 
 const NavBar = () => {
-    const renderNavItem = (label, to) => {
-        return (
-            <Route path={to} exact children={({ match }) => {
-                let classes = 'nav-item'
-
-                if (match) {
-                    classes += ' active'
-                }
-
-                return (
-                    <li className={ classes }>
-                        <Link className="nav-link" to={ to }>{ label }</Link>
-                    </li>
-                )
-            }}/>
-        )
-    }
-
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <Link className="navbar-brand" to="/">Gifs &amp; emojis search engine</Link>
@@ -28,10 +12,10 @@ const NavBar = () => {
             </button>
             <div className="collapse navbar-collapse" id="navbarGif">
                 <ul className="navbar-nav mr-auto">
-                    { renderNavItem('Gifs', '/') }
-                    { renderNavItem('Favorite gifs', '/fav-gifs') }
-                    { renderNavItem('Emojis', '/emojis') }
-                    { renderNavItem('Favorite emojis', '/fav-emojis') }
+                    <NavItem to={ '/' } label={ 'Gifs' } />
+                    <NavItem to={ '/fav-gifs' } label={ 'Favorite gifs' } />
+                    <NavItem to={ '/emojis' } label={ 'Emojis' } />
+                    <NavItem to={ '/fav-emojis' } label={ 'Favorite emojis' } />
                 </ul>
                 <span className="navbar-text">
                     Simple application to discover React &amp; Node
