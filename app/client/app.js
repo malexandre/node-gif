@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 import Styles from './styles.scss'
 
+import GifList from './modules/gif-list'
 import NavBar from './modules/navbar'
 import SearchBar from './modules/search-bar'
 
@@ -25,6 +26,7 @@ class App extends Component {
             <div className="container">
                 <NavBar />
                 <SearchBar onFilterSubmit={ this.onFilterSubmit } />
+                <GifList filter={ this.state.filter } />
             </div>
         )
     }

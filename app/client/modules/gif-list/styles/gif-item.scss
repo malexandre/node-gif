@@ -1,0 +1,11 @@
+.gif-item_fix-height-image {
+    &_container,
+    &_img {
+        height: 125px;
+    }
+
+    &_container {
+        background: #333;
+        text-align: center;
+    }
+}
