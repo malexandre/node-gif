@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 import Styles from './styles.scss'
 
-import NavBar from './modules/common/navbar'
+import NavBar from './modules/navbar'
 
 class App extends Component {
     render() {
