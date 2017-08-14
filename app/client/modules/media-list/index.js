@@ -1,10 +1,12 @@
 import 'whatwg-fetch'
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import Common from '../common'
-import GifItem from './gif-item'
+import EmptyList from './empty-list'
+import Loader from './loader'
+import SearchBar from './search-bar'
 
-class GifList extends Component {
+class MediaList extends Component {
     constructor(props) {
         super(props)
 
@@ -23,7 +25,7 @@ class GifList extends Component {
         this.setState({ items: [], laoding: hasNewQuery })
 
         if (hasNewQuery) {
-            fetch(`/api/gifs/search/${query}`)
+            fetch(`${this.props.url}/${query}`)
                 .then((res) => {
                     return res.json()
                 }).then((json) => {
@@ -42,21 +44,26 @@ class GifList extends Component {
     }
 
     render() {
-        const items = this.state.items.map((gif) => <GifItem key={ gif.id } gif={ gif } />)
+        const items = this.state.items.map((item) => <this.props.item key={ item.id } item={ item } />)
 
         return (
             <div className="gif-list">
-                <Common.SearchBar onFilterSubmit={ this.onFilterSubmit } />
+                <SearchBar onFilterSubmit={ this.onFilterSubmit } />
                 <div className="mt-3">
-                    <Common.EmptyList items={ this.state.items } loading={ this.state.loading } />
+                    <EmptyList items={ this.state.items } loading={ this.state.loading } />
                     <div className="row">
                         { items }
                     </div>
-                    <Common.Loader items={ this.state.items } loading={ this.state.loading } />
+                    <Loader items={ this.state.items } loading={ this.state.loading } />
                 </div>
             </div>
         )
     }
 }
 
-export default GifList
+MediaList.propTypes = {
+    url: PropTypes.string,
+    item: PropTypes.func
+}
+
+export default MediaList

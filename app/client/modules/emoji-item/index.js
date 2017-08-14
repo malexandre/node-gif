@@ -5,9 +5,9 @@ const EmojiItem = (props) => {
     return (
         <div className="col-lg-3">
             <div className="card mb-3 text-center">
-                <span className="card-img-top display-4">{ props.emoji.char }</span>
+                <span className="card-img-top display-4">{ props.item.char }</span>
                 <div className="card-body">
-                    <div>:{ props.emoji.key }:</div>
+                    <div>:{ props.item.id }:</div>
                     <button className="btn btn-sm btn-warning">
                         Favorite
                     </button>
@@ -18,7 +18,7 @@ const EmojiItem = (props) => {
 }
 
 EmojiItem.propTypes = {
-    emoji: PropTypes.object
+    item: PropTypes.object
 }
 
 export default EmojiItem

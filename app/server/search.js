@@ -37,7 +37,7 @@ const emojiSearch = (query, offset) => {
         }
 
         if (match) {
-            emojis.push(Object.assign({}, emojilib.lib[key], { key }))
+            emojis.push(Object.assign({}, emojilib.lib[key], { id: key }))
         }
     })
 

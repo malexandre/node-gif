@@ -6,13 +6,13 @@ const GifItem = (props) => {
         <div className="col-lg-3">
             <div className="card mb-3 text-center">
                 <img className="card-img-top"
-                    src={ props.gif.images.preview_webp.url }
-                    alt={ `Preview gif ${props.gif.slug}` } />
+                    src={ props.item.images.preview_webp.url }
+                    alt={ `Preview gif ${props.item.slug}` } />
                 <div className="card-body">
                     <button className="btn btn-sm btn-warning mr-3">
                         Favorite
                     </button>
-                    <a className="btn btn-sm btn-secondary" href={ props.gif.url }>
+                    <a className="btn btn-sm btn-secondary" href={ props.item.url }>
                         Open in Giphy
                     </a>
                 </div>
@@ -22,7 +22,7 @@ const GifItem = (props) => {
 }
 
 GifItem.propTypes = {
-    gif: PropTypes.object
+    item: PropTypes.object
 }
 
 export default GifItem
