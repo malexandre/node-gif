@@ -13,7 +13,6 @@ const giphySearch = async(query, offset) => {
             limit: 20,
             offset: offset
         })
-        // console.log(resGiphy)
     }
     catch (err) {
         winston.log('error', 'Error from Giphy Api.', err)

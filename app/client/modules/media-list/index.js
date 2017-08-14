@@ -27,7 +27,7 @@ class MediaList extends Component {
     }
 
     fetchNewQuery(url) {
-        this.setState({ laoding: true })
+        this.setState({ loading: true })
 
         fetch(url)
             .then((res) => {
@@ -78,7 +78,7 @@ class MediaList extends Component {
                     <div className="row">
                         { items }
                     </div>
-                    <Loader items={ this.state.items } loading={ this.state.loading } />
+                    <Loader loading={ this.state.loading } />
                     { this.state.nextPage ? paginationButton : null }
                 </div>
             </div>
