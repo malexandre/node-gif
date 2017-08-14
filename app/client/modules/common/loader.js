@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import React from 'react'
 
 const Loader = (props) => {
     if (props.loading) {
@@ -6,6 +7,10 @@ const Loader = (props) => {
     }
 
     return null
+}
+
+Loader.propTypes = {
+    loading: PropTypes.bool
 }
 
 export default Loader

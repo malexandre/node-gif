@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
-import Styles from './styles.scss'
+import './styles.scss'
 
 import GifList from './modules/gif-list'
 import NavBar from './modules/navbar'
@@ -9,12 +9,12 @@ import SearchBar from './modules/search-bar'
 
 class App extends Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             filter: ''
-        };
+        }
 
-        this.onFilterSubmit = this.onFilterSubmit.bind(this);
+        this.onFilterSubmit = this.onFilterSubmit.bind(this)
     }
 
     onFilterSubmit(filter) {
@@ -32,6 +32,6 @@ class App extends Component {
     }
 }
 
-ReactDOM.render(<BrowserRouter><App /></BrowserRouter>, document.getElementById('app'));
+ReactDOM.render(<BrowserRouter><App /></BrowserRouter>, document.getElementById('app'))
 
 export default App

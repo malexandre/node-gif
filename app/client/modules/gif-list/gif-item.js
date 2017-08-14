@@ -1,14 +1,15 @@
-import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import React from 'react'
 
-import Styles from './styles/gif-item.scss'
+import './styles/gif-item.scss'
 
 const GifItem = (props) => {
     return (
         <div className="col-lg-3">
             <div className="card mb-3">
                 <img className="card-img-top gif-item_fix-height-image_img"
-                     src={ props.gif.images.preview_webp.url }
-                     alt={ `Preview gif ${props.gif.slug}` } />
+                    src={ props.gif.images.preview_webp.url }
+                    alt={ `Preview gif ${props.gif.slug}` } />
                 <div className="card-body">
                     <div className="row">
                         <button className="btn btn-sm btn-warning">
@@ -22,6 +23,10 @@ const GifItem = (props) => {
             </div>
         </div>
     )
+}
+
+GifItem.propTypes = {
+    gif: PropTypes.object
 }
 
 export default GifItem

@@ -1,13 +1,14 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 class SearchBar extends Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             filter: ''
-        };
+        }
 
-        this.onFilterSubmit = this.onFilterSubmit.bind(this);
+        this.onFilterSubmit = this.onFilterSubmit.bind(this)
     }
 
     onFilterSubmit(event) {
@@ -25,11 +26,11 @@ class SearchBar extends Component {
                     <form onSubmit={ this.onFilterSubmit }>
                         <div className="input-group">
                             <input type="text"
-                                   className="form-control"
-                                   placeholder="Search for..."
-                                   aria-label="Search for..."
-                                   value={ this.state.filter }
-                                   onChange={ (event) => this.setState({ filter: event.target.value }) } />
+                                className="form-control"
+                                placeholder="Search for..."
+                                aria-label="Search for..."
+                                value={ this.state.filter }
+                                onChange={ (event) => this.setState({ filter: event.target.value }) } />
                             <span className="input-group-btn">
                                 <button className="btn btn-primary" type="submit">
                                     Go!
@@ -41,6 +42,10 @@ class SearchBar extends Component {
             </div>
         )
     }
+}
+
+SearchBar.propTypes = {
+    onFilterSubmit: PropTypes.func
 }
 
 export default SearchBar

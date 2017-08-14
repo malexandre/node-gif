@@ -1,4 +1,5 @@
 import 'whatwg-fetch'
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import Common from '../common'
@@ -6,7 +7,8 @@ import GifItem from './gif-item'
 
 class GifList extends Component {
     constructor(props) {
-        super(props);
+        super(props)
+
         this.state = {
             items: [],
             loading: false,
@@ -47,6 +49,10 @@ class GifList extends Component {
             </div>
         )
     }
+}
+
+GifList.propTypes = {
+    filter: PropTypes.string
 }
 
 export default GifList
