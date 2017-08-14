@@ -5,12 +5,14 @@ const EmojiItem = (props) => {
     return (
         <div className="col-lg-3">
             <div className="card mb-3 text-center">
-                <span className="card-img-top display-4">{ props.item.char }</span>
+                <span className="card-img-top display-4">
+                    { props.item.char }
+                </span>
                 <div className="card-body">
-                    <div>:{ props.item.id }:</div>
-                    <button className="btn btn-sm btn-warning">
-                        Favorite
-                    </button>
+                    <div>
+                        :{ props.item.id }:
+                    </div>
+                    <button className="btn btn-sm btn-warning">Favorite</button>
                 </div>
             </div>
         </div>

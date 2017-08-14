@@ -22,9 +22,9 @@ module.exports.saveFavoriteHandler = (req, res) => {
     res.sendStatus(200)
 }
 
-module.exports.listFavoritesHandler = async (req, res) => {
-    let offset = parseInt(req.query.offset) || 0
-    let nextPage = `/api/${req.params.type}/favorite?offset=${offset + 20}`
+module.exports.listFavoritesHandler = async(req, res) => {
+    const offset = parseInt(req.query.offset) || 0
+    const nextPage = `/api/${req.params.type}/favorite?offset=${offset + 20}`
 
     let items
     try {

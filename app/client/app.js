@@ -18,6 +18,11 @@ const App = () => {
     )
 }
 
-ReactDOM.render(<BrowserRouter><App /></BrowserRouter>, document.getElementById('app'))
+ReactDOM.render(
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>,
+    document.getElementById('app')
+)
 
 export default App

@@ -30,7 +30,7 @@ class SearchBar extends Component {
                                 placeholder="Search for..."
                                 aria-label="Search for..."
                                 value={ this.state.filter }
-                                onChange={ (event) => this.setState({ filter: event.target.value }) } />
+                                onChange={ (event) => this.setState({ filter: event.target.value }) }/>
                             <span className="input-group-btn">
                                 <button className="btn btn-primary" type="submit">
                                     Go!

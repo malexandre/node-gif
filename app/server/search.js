@@ -5,7 +5,7 @@ const winston = require('winston')
 
 module.exports = {}
 
-const giphySearch = async (query, offset) => {
+const giphySearch = async(query, offset) => {
     let resGiphy
     try {
         resGiphy = await giphy.search({
@@ -27,7 +27,7 @@ const giphySearch = async (query, offset) => {
 }
 
 const emojiSearch = (query, offset) => {
-    let emojis = []
+    const emojis = []
 
     Object.keys(emojilib.lib).forEach((key) => {
         let match = key.includes(query)
@@ -47,11 +47,13 @@ const emojiSearch = (query, offset) => {
     }
 }
 
-module.exports.searchHandler = async (req, res) => {
-    let offset = parseInt(req.query.offset) || 0
-    let nextPage = `/api/${req.params.type}/search/${req.params.query}?offset=${offset + 20}`
+module.exports.searchHandler = async(req, res) => {
+    const offset = parseInt(req.query.offset) || 0
+    const nextPage = `/api/${req.params.type}/search/${req.params.query}?offset=${offset + 20}`
 
-    let searchFn = () => { res.sendStatus(404) }
+    let searchFn = () => {
+        res.sendStatus(404)
+    }
 
     if (req.params.type === 'gifs') {
         searchFn = giphySearch

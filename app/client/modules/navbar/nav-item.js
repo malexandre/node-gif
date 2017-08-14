@@ -5,7 +5,7 @@ import { Route, Link } from 'react-router-dom'
 const NavItem = (props) => {
     return (
         <Route path={ props.to } exact>
-            {({ match }) => {
+            { ({ match }) => {
                 let classes = 'nav-item'
 
                 if (match) {
@@ -14,17 +14,19 @@ const NavItem = (props) => {
 
                 return (
                     <li className={ classes }>
-                        <Link className="nav-link" to={ props.to }>{ props.label }</Link>
+                        <Link className="nav-link" to={ props.to }>
+                            { props.label }
+                        </Link>
                     </li>
                 )
-            }}
+            } }
         </Route>
     )
 }
 
 NavItem.propTypes = {
     to: PropTypes.string,
-    label: PropTypes.string,
+    label: PropTypes.string
 }
 
 export default NavItem

@@ -14,17 +14,17 @@ module.exports.saveFavorite = (id, type, meta, userToken) => {
 
 module.exports.loadFavorites = (type, userToken, limit = 20, offset = 0) => {
     return new Promise((resolve, reject) => {
-        db.all('SELECT meta FROM Favorites WHERE type = ? AND userToken = ? LIMIT ? OFFSET ?',
-            type, userToken, limit, offset, (error, rows) => {
-                if (error) {
-                    return reject(error)
-                }
+        const sqlQuery = 'SELECT meta FROM Favorites WHERE type = ? AND userToken = ? LIMIT ? OFFSET ?'
+        db.all(sqlQuery, type, userToken, limit, offset, (error, rows) => {
+            if (error) {
+                return reject(error)
+            }
 
-                resolve(rows.map((row) => {
-                    row.meta = JSON.parse(row.meta)
-                    return row
-                }))
-            })
+            resolve(rows.map((row) => {
+                row.meta = JSON.parse(row.meta)
+                return row
+            }))
+        })
     })
 }
 

@@ -12,7 +12,7 @@ module.exports = {}
 module.exports.run = () => {
     db.initDb()
 
-    let app = express()
+    const app = express()
     app.use(authMiddleware)
     app.use(bodyParser.urlencoded({ extended: true }))
     app.use(bodyParser.json())
@@ -25,11 +25,10 @@ module.exports.run = () => {
 
     app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, '../client/dist/index.html')))
 
-    let server = app.listen(8000)
+    const server = app.listen(8000)
 
     process.on('SIGINT', () => {
         db.close()
         server.close()
     })
 }
-

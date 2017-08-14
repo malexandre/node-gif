@@ -28,9 +28,11 @@ class MediaList extends Component {
             fetch(`${this.props.url}/${query}`)
                 .then((res) => {
                     return res.json()
-                }).then((json) => {
+                })
+                .then((json) => {
                     this.setState({ items: this.state.items.concat(json.items), loading: false })
-                }).catch(() => {
+                })
+                .catch(() => {
                     this.setState({ loading: false })
                 })
         }
@@ -62,8 +64,8 @@ class MediaList extends Component {
 }
 
 MediaList.propTypes = {
-    url: PropTypes.string,
-    item: PropTypes.func
+    item: PropTypes.func,
+    url: PropTypes.string
 }
 
 export default MediaList
