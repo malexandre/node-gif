@@ -1,5 +1,4 @@
 import 'whatwg-fetch'
-import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import Common from '../common'
@@ -10,13 +9,13 @@ class GifList extends Component {
         super(props)
 
         this.state = {
+            filter: '',
             items: [],
             loading: false,
             nextPage: null
         }
 
-        // Timeout because we cannot do setState in the constructor
-        setTimeout(() => this.fetchNewQuery(props.filter))
+        this.onFilterSubmit = this.onFilterSubmit.bind(this)
     }
 
     fetchNewQuery(query) {
@@ -35,31 +34,29 @@ class GifList extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.filter === nextProps.filter) {
-            return
+    onFilterSubmit(filter) {
+        if (filter.trim() !== this.state.filter.trim()) {
+            this.setState({ filter })
+            this.fetchNewQuery(filter)
         }
-
-        this.fetchNewQuery(nextProps.filter)
     }
 
     render() {
         const items = this.state.items.map((gif) => <GifItem key={ gif.id } gif={ gif } />)
 
         return (
-            <div className="mt-3">
-                <Common.EmptyList items={ this.state.items } loading={ this.state.loading } />
-                <div className="row">
-                    { items }
+            <div className="gif-list">
+                <Common.SearchBar onFilterSubmit={ this.onFilterSubmit } />
+                <div className="mt-3">
+                    <Common.EmptyList items={ this.state.items } loading={ this.state.loading } />
+                    <div className="row">
+                        { items }
+                    </div>
+                    <Common.Loader items={ this.state.items } loading={ this.state.loading } />
                 </div>
-                <Common.Loader items={ this.state.items } loading={ this.state.loading } />
             </div>
         )
     }
-}
-
-GifList.propTypes = {
-    filter: PropTypes.string
 }
 
 export default GifList
