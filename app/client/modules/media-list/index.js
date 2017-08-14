@@ -14,39 +14,54 @@ class MediaList extends Component {
             filter: '',
             items: [],
             loading: false,
-            nextPage: null
+            nextPage: undefined
         }
 
         this.onFilterSubmit = this.onFilterSubmit.bind(this)
+        this.onNextPageClick = this.onNextPageClick.bind(this)
     }
 
-    fetchNewQuery(query) {
-        const hasNewQuery = query && query.trim() !== ''
-        this.setState({ items: [], laoding: hasNewQuery })
+    fetchNewQuery(url) {
+        this.setState({ laoding: true })
 
-        if (hasNewQuery) {
-            fetch(`${this.props.url}/${query}`)
-                .then((res) => {
-                    return res.json()
+        fetch(url)
+            .then((res) => {
+                return res.json()
+            })
+            .then((json) => {
+                this.setState({
+                    items: this.state.items.concat(json.items),
+                    loading: false,
+                    nextPage: json.nextPage
                 })
-                .then((json) => {
-                    this.setState({ items: this.state.items.concat(json.items), loading: false })
-                })
-                .catch(() => {
-                    this.setState({ loading: false })
-                })
-        }
+            })
+            .catch(() => {
+                this.setState({ loading: false })
+            })
     }
 
     onFilterSubmit(filter) {
         if (filter.trim() !== this.state.filter.trim()) {
-            this.setState({ filter })
-            this.fetchNewQuery(filter)
+            this.setState({ filter, list: [] })
+            this.fetchNewQuery(`${this.props.url}/${filter.trim()}`)
+        }
+    }
+
+    onNextPageClick() {
+        if (this.state.nextPage) {
+            this.fetchNewQuery(this.state.nextPage)
         }
     }
 
     render() {
         const items = this.state.items.map((item) => <this.props.item key={ item.id } item={ item } />)
+        const paginationButton = (
+            <div className="mt-3 text-center">
+                <button className="btn btn-secondary" type="button" onClick={ this.onNextPageClick }>
+                    Next page
+                </button>
+            </div>
+        )
 
         return (
             <div className="gif-list">
@@ -57,6 +72,7 @@ class MediaList extends Component {
                         { items }
                     </div>
                     <Loader items={ this.state.items } loading={ this.state.loading } />
+                    { this.state.nextPage ? paginationButton : null }
                 </div>
             </div>
         )
