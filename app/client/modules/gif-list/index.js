@@ -13,7 +13,26 @@ class GifList extends Component {
             items: [],
             loading: false,
             nextPage: null
-        };
+        }
+
+        // Timeout because we cannot do setState in the constructor
+        setTimeout(() => this.fetchNewQuery(props.filter))
+    }
+
+    fetchNewQuery(query) {
+        const hasNewQuery = query && query.trim() !== ''
+        this.setState({ items: [], laoding: hasNewQuery })
+
+        if (hasNewQuery) {
+            fetch(`/api/gifs/search/${query}`)
+                .then((res) => {
+                    return res.json()
+                }).then((json) => {
+                    this.setState({ items: this.state.items.concat(json.items), loading: false })
+                }).catch(() => {
+                    this.setState({ loading: false })
+                })
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -21,29 +40,17 @@ class GifList extends Component {
             return
         }
 
-        const hasNewQuery = nextProps.filter && nextProps.filter.trim() !== ''
-        this.setState({ items: [], laoding: hasNewQuery })
-
-        if (!hasNewQuery){
-            return
-        }
-
-        fetch(`/api/gifs/search/${nextProps.filter}`)
-            .then((res) => {
-                return res.json()
-            }).then((json) => {
-                this.setState({ items: this.state.items.concat(json.items), loading: false })
-            }).catch((ex) => {
-                console.log('parsing failed', ex)
-            })
+        this.fetchNewQuery(nextProps.filter)
     }
 
     render() {
+        const items = this.state.items.map((gif) => <GifItem key={ gif.id } gif={ gif } />)
+
         return (
             <div className="mt-3">
                 <Common.EmptyList items={ this.state.items } loading={ this.state.loading } />
                 <div className="row">
-                    { this.state.items.map((gif) => <GifItem key={ gif.id } gif={ gif } />) }
+                    { items }
                 </div>
                 <Common.Loader items={ this.state.items } loading={ this.state.loading } />
             </div>
