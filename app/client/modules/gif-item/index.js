@@ -1,13 +1,21 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
+import './gif-item.scss'
+
 const GifItem = (props) => {
+    const getUrl = (gif) => {
+        const fixedHeight = gif.images.fixed_height
+
+        return fixedHeight.mp4 || fixedHeight.webp || fixedHeight.gif
+    }
+
     return (
         <div className="col-lg-3">
             <div className="card mb-3 text-center">
-                <img className="card-img-top"
-                    src={ props.item.images.preview_webp.url }
-                    alt={ `Preview gif ${props.item.slug}` }/>
+                <video className="card-img-top gif-item_video" autoPlay loop muted>
+                    <source src={ getUrl(props.item) } type="video/mp4" />
+                </video>
                 <div className="card-body">
                     <button className="btn btn-sm btn-warning mr-3">Favorite</button>
                     <a className="btn btn-sm btn-secondary" href={ props.item.url }>
