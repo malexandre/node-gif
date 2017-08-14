@@ -1,10 +1,19 @@
 const db = require('./db')
+const winston = require('winston')
 
 module.exports = {}
 
 module.exports.saveFavoriteHandler = (req, res) => {
-    if (!req.body.type || req.body.type !== req.params.type || !req.body.id ||
-        Object.keys(req.body.meta || {}).length === 0) {
+    const hasValidType = req.body.type && req.body.type === req.params.type
+    const hasValidId = Boolean(req.body.id)
+    const hasValidMeta = Object.keys(req.body.meta || {}).length !== 0
+
+    if (!hasValidType || !hasValidId || !hasValidMeta) {
+        winston.log('error', 'Bad arguments', {
+            hasValidType,
+            hasValidId,
+            hasValidMeta
+        })
         res.sendStatus(422)
         return
     }

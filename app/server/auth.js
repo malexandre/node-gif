@@ -1,7 +1,7 @@
 module.exports = {}
 
 module.exports.authMiddleware = (req, res, next) => {
-    const token = req.headers["x-user-token"]
+    const token = req.headers['x-user-token']
 
     if (token) {
         res.locals.user = token

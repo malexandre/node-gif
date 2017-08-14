@@ -9,7 +9,7 @@ module.exports.initDb = () => {
 }
 
 module.exports.saveFavorite = (id, type, meta, userToken) => {
-    db.run("INSERT OR REPLACE INTO Favorites VALUES (?, ?, ?, ?)", id, type, JSON.stringify(meta), userToken)
+    db.run('INSERT OR REPLACE INTO Favorites VALUES (?, ?, ?, ?)', id, type, JSON.stringify(meta), userToken)
 }
 
 module.exports.loadFavorites = (type, userToken, limit, offset, callback) => {

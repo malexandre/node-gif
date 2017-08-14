@@ -1,5 +1,5 @@
 const config = require('./config')
-const emojilib = require("emojilib")
+const emojilib = require('emojilib')
 const giphy = require('giphy-api')(config.GIPHY_API_KEY)
 
 module.exports = {}
