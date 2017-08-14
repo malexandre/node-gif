@@ -22,14 +22,21 @@ module.exports.saveFavoriteHandler = (req, res) => {
     res.sendStatus(200)
 }
 
-module.exports.listFavoritesHandler = (req, res) => {
-    let offset = parseInt(req.query.offset) || 0
+module.exports.listFavoritesHandler = async (req, res) => {
+    let offset = parseInt(req.query.offset) || 0
     let nextPage = `/api/${req.params.type}/favorite?offset=${offset + 20}`
 
-    db.loadFavorites(req.params.type, res.locals.user, 21, offset, items => {
-        res.json({
-            items: items,
-            nextPage: (items || []).length > 20 ? nextPage : undefined
-        })
+    let items
+    try {
+        items = await db.loadFavorites(req.params.type, res.locals.user, 21, offset)
+    }
+    catch (err) {
+        winston.log('error', 'Error from sqlite3.', err)
+        return res.sendStatus(500)
+    }
+
+    res.json({
+        items: items,
+        nextPage: (items || []).length > 20 ? nextPage : undefined
     })
 }
