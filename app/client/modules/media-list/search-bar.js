@@ -5,7 +5,7 @@ class SearchBar extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            filter: ''
+            filter: props.init
         }
 
         this.onFilterSubmit = this.onFilterSubmit.bind(this)
@@ -45,6 +45,7 @@ class SearchBar extends Component {
 }
 
 SearchBar.propTypes = {
+    init: PropTypes.string,
     onFilterSubmit: PropTypes.func
 }
 

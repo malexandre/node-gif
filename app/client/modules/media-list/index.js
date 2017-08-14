@@ -10,12 +10,17 @@ class MediaList extends Component {
     constructor(props) {
         super(props)
 
-        this.state = {
-            filter: '',
-            items: [],
-            loading: false,
-            nextPage: undefined
-        }
+        const initialState = localStorage.getItem(this.props.url)
+
+        this.state =
+            initialState && initialState !== '' ?
+                JSON.parse(initialState) :
+                {
+                    filter: '',
+                    items: [],
+                    loading: false,
+                    nextPage: undefined
+                }
 
         this.onFilterSubmit = this.onFilterSubmit.bind(this)
         this.onNextPageClick = this.onNextPageClick.bind(this)
@@ -34,6 +39,8 @@ class MediaList extends Component {
                     loading: false,
                     nextPage: json.nextPage
                 })
+
+                setTimeout(() => localStorage.setItem(this.props.url, JSON.stringify(this.state)))
             })
             .catch(() => {
                 this.setState({ loading: false })
@@ -42,7 +49,7 @@ class MediaList extends Component {
 
     onFilterSubmit(filter) {
         if (filter.trim() !== this.state.filter.trim()) {
-            this.setState({ filter, list: [] })
+            this.setState({ filter, items: [] })
             this.fetchNewQuery(`${this.props.url}/${filter.trim()}`)
         }
     }
@@ -65,7 +72,7 @@ class MediaList extends Component {
 
         return (
             <div className="gif-list">
-                <SearchBar onFilterSubmit={ this.onFilterSubmit } />
+                <SearchBar onFilterSubmit={ this.onFilterSubmit } init={ this.state.filter } />
                 <div className="mt-3">
                     <EmptyList items={ this.state.items } loading={ this.state.loading } />
                     <div className="row">
