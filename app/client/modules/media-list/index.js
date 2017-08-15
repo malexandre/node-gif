@@ -119,9 +119,14 @@ class MediaList extends Component {
     }
 
     render() {
-        const items = this.state.items.map((item) =>
-            <this.props.item key={ item.id } item={ item } auth={ this.props.auth } onFavoriteClick={ this.onFavoriteClick } />
-        )
+        const items = this.state.items.map((item) => {
+            return (
+                <this.props.item key={ item.id }
+                    item={ item }
+                    auth={ this.props.auth }
+                    onFavoriteClick={ this.onFavoriteClick }/>
+            )
+        })
         const paginationButton = (
             <div className="mt-3 text-center">
                 <button className="btn btn-secondary" type="button" onClick={ this.onNextPageClick }>
