@@ -34,6 +34,23 @@ module.exports.loadFavorites = (type, userToken, limit = 20, offset = 0) => {
     })
 }
 
+module.exports.areFavorites = (type, userToken, mediaList) => {
+    return new Promise((resolve, reject) => {
+        const sqlQuery =
+            'SELECT Media.id FROM Media' +
+            ' LEFT JOIN Favorites ON Media.id = Favorites.mediaId AND Media.type = Favorites.type' +
+            ` WHERE Media.type = '${type}' AND Favorites.userToken = '${userToken}' AND` +
+            ` Media.id IN ( ${mediaList.map((id) => `'${id}'`).join(', ')} )`
+        db.all(sqlQuery, (error, rows) => {
+            if (error) {
+                return reject(error)
+            }
+
+            resolve(rows.map((row) => row.id))
+        })
+    })
+}
+
 module.exports.close = () => {
     db.close()
 }

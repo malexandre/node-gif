@@ -29,6 +29,7 @@ module.exports.listFavoritesHandler = async(req, res) => {
     let items
     try {
         items = await db.loadFavorites(req.params.type, res.locals.user, 21, offset)
+        items = await module.exports.updateFavoriteStatus(items, req.params.type, res.locals.user)
     }
     catch (err) {
         winston.log('error', 'Error from sqlite3.', err)
@@ -39,4 +40,13 @@ module.exports.listFavoritesHandler = async(req, res) => {
         items: items,
         nextPage: (items || []).length > 20 ? nextPage : undefined
     })
+}
+
+module.exports.updateFavoriteStatus = async(items, type, userToken) => {
+    if (!userToken) {
+        return items
+    }
+
+    const favorites = await db.areFavorites(type, userToken, items.map((item) => item.id))
+    return items.map((item) => Object.assign(item, { favorite: favorites.indexOf(item.id) !== -1 }))
 }

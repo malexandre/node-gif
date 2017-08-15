@@ -1,5 +1,6 @@
 const config = require('./config')
 const emojilib = require('emojilib')
+const favorite = require('./favorite')
 const giphy = require('giphy-api')(config.GIPHY_API_KEY)
 const winston = require('winston')
 
@@ -68,8 +69,20 @@ module.exports.searchHandler = async(req, res) => {
         return
     }
 
+    let items = results.items
+
+    if (res.locals && res.locals.user) {
+        try {
+            items = await favorite.updateFavoriteStatus(items, req.params.type, res.locals.user)
+        }
+        catch (err) {
+            winston.log('error', 'Error from sqlite3.', err)
+            return res.sendStatus(500)
+        }
+    }
+
     res.json({
-        items: results.items,
+        items: items,
         nextPage: results.more ? nextPage : undefined
     })
 }
