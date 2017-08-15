@@ -12,7 +12,11 @@ const EmojiItem = (props) => {
                     <div>
                         :{ props.item.id }:
                     </div>
-                    { props.auth ? <button className="btn btn-sm btn-warning">Favorite</button> : null }
+                    { props.auth ?
+                        <button className="btn btn-sm btn-warning" onClick={ () => props.onFavoriteClick(props.item) }>
+                              Favorite
+                        </button> :
+                        null }
                 </div>
             </div>
         </div>
@@ -21,7 +25,8 @@ const EmojiItem = (props) => {
 
 EmojiItem.propTypes = {
     auth: PropTypes.string,
-    item: PropTypes.object
+    item: PropTypes.object,
+    onFavoriteClick: PropTypes.func
 }
 
 export default EmojiItem

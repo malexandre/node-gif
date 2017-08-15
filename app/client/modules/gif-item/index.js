@@ -17,7 +17,12 @@ const GifItem = (props) => {
                     <source src={ getUrl(props.item) } type="video/mp4" />
                 </video>
                 <div className="card-body">
-                    { props.auth ? <button className="btn btn-sm btn-warning mr-3">Favorite</button> : null }
+                    { props.auth ?
+                        <button className="btn btn-sm btn-warning mr-3"
+                            onClick={ () => props.onFavoriteClick(props.item) }>
+                              Favorite
+                        </button> :
+                        null }
                     <a className="btn btn-sm btn-secondary" href={ props.item.url }>
                         Open in Giphy
                     </a>
@@ -29,7 +34,8 @@ const GifItem = (props) => {
 
 GifItem.propTypes = {
     auth: PropTypes.string,
-    item: PropTypes.object
+    item: PropTypes.object,
+    onFavoriteClick: PropTypes.func
 }
 
 export default GifItem

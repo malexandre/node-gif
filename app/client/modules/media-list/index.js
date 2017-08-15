@@ -13,6 +13,7 @@ class MediaList extends Component {
 
         this.state = initialState && initialState !== '' ? JSON.parse(initialState) : this.defaultState()
 
+        this.onFavoriteClick = this.onFavoriteClick.bind(this)
         this.onNextPageClick = this.onNextPageClick.bind(this)
     }
 
@@ -68,6 +69,7 @@ class MediaList extends Component {
             })
             .catch(() => {
                 this.setState({ loading: false })
+                // Todo display error
             })
     }
 
@@ -77,8 +79,29 @@ class MediaList extends Component {
         }
     }
 
+    onFavoriteClick(item) {
+        if (!this.props.auth) {
+            return // Todo display error
+        }
+
+        fetch(`/api/${item.type}/favorite`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-user-token': this.props.auth
+            },
+            body: JSON.stringify({
+                id: item.id,
+                meta: item,
+                type: item.type
+            })
+        }).then(() => (item.favorite = !item.favorite))
+    }
+
     render() {
-        const items = this.state.items.map((item) => <this.props.item key={ item.id } item={ item } auth={ this.props.auth } />)
+        const items = this.state.items.map((item) =>
+            <this.props.item key={ item.id } item={ item } auth={ this.props.auth } onFavoriteClick={ this.onFavoriteClick } />
+        )
         const paginationButton = (
             <div className="mt-3 text-center">
                 <button className="btn btn-secondary" type="button" onClick={ this.onNextPageClick }>
