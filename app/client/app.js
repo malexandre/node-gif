@@ -16,6 +16,7 @@ class App extends Component {
             auth: ''
         }
         this.onLoginSubmit = this.onLoginSubmit.bind(this)
+        localStorage.clear()
     }
 
     onLoginSubmit(event, auth) {
