@@ -12,7 +12,7 @@ const EmojiItem = (props) => {
                     <div>
                         :{ props.item.id }:
                     </div>
-                    <button className="btn btn-sm btn-warning">Favorite</button>
+                    { props.auth ? <button className="btn btn-sm btn-warning">Favorite</button> : null }
                 </div>
             </div>
         </div>
@@ -20,6 +20,7 @@ const EmojiItem = (props) => {
 }
 
 EmojiItem.propTypes = {
+    auth: PropTypes.string,
     item: PropTypes.object
 }
 
