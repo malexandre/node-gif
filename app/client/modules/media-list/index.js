@@ -10,8 +10,13 @@ class MediaList extends Component {
         super(props)
 
         const initialState = localStorage.getItem(this.getLocalStorageKey())
+        const hasInitialState = initialState && initialState !== ''
 
-        this.state = initialState && initialState !== '' ? JSON.parse(initialState) : this.defaultState()
+        this.state = hasInitialState ? JSON.parse(initialState) : this.defaultState()
+
+        if (!hasInitialState && this.props.url) {
+            setTimeout(() => this.fetchNewQuery(this.props.url, this.props.auth))
+        }
 
         this.onFavoriteClick = this.onFavoriteClick.bind(this)
         this.onNextPageClick = this.onNextPageClick.bind(this)
