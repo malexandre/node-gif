@@ -19,7 +19,7 @@ module.exports.run = () => {
     app.use(express.static('app/client/dist'))
 
     app.get('/api/:type/search/:query', searchHandler)
-    app.get('/api/:type/favorite/:query', authWrapper(listFavoritesHandler))
+    app.get('/api/:type/favorite', authWrapper(listFavoritesHandler))
 
     app.post('/api/:type/favorite', authWrapper(saveFavoriteHandler))
 

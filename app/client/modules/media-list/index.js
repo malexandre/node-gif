@@ -4,7 +4,6 @@ import React, { Component } from 'react'
 
 import EmptyList from './empty-list'
 import Loader from './loader'
-import SearchBar from './search-bar'
 
 class MediaList extends Component {
     constructor(props) {
@@ -12,41 +11,44 @@ class MediaList extends Component {
 
         const initialState = localStorage.getItem(this.getLocalStorageKey())
 
-        this.state =
-            initialState && initialState !== '' ?
-                JSON.parse(initialState) :
-                {
-                    filter: '',
-                    items: [],
-                    loading: false,
-                    nextPage: undefined
-                }
+        this.state = initialState && initialState !== '' ? JSON.parse(initialState) : this.defaultState()
 
-        this.onFilterSubmit = this.onFilterSubmit.bind(this)
         this.onNextPageClick = this.onNextPageClick.bind(this)
     }
 
+    defaultState() {
+        return {
+            items: [],
+            loading: false,
+            nextPage: undefined
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
-        if (nextProps.auth !== this.props.auth) {
-            this.onFilterSubmit('')
+        if (nextProps.auth !== this.props.auth || nextProps.url !== this.props.url) {
+            this.setState(this.defaultState())
+
+            if (nextProps.url.trim().length !== 0) {
+                this.fetchNewQuery(nextProps.url, nextProps.auth)
+            }
         }
     }
 
     getLocalStorageKey() {
         const fakeLogin = this.props.auth || ''
-        return fakeLogin + this.props.url
+        return `${fakeLogin}::list::${this.props.url}`
     }
 
-    fetchNewQuery(url) {
+    fetchNewQuery(url, auth) {
         this.setState({ loading: true })
 
         let params
-        if (this.props.auth) {
+        if (auth) {
             params = {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'x-user-token': this.props.auth
+                    'x-user-token': auth
                 }
             }
         }
@@ -69,13 +71,6 @@ class MediaList extends Component {
             })
     }
 
-    onFilterSubmit(filter) {
-        if (filter.trim() !== this.state.filter.trim()) {
-            this.setState({ filter, items: [], nextPage: undefined, loading: false })
-            this.fetchNewQuery(`${this.props.url}/${filter.trim()}`)
-        }
-    }
-
     onNextPageClick() {
         if (this.state.nextPage) {
             this.fetchNewQuery(this.state.nextPage)
@@ -93,16 +88,13 @@ class MediaList extends Component {
         )
 
         return (
-            <div className="media-list">
-                <SearchBar onFilterSubmit={ this.onFilterSubmit } init={ this.state.filter } auth={ this.props.auth } />
-                <div className="mt-3">
-                    <EmptyList items={ this.state.items } loading={ this.state.loading } />
-                    <div className="row">
-                        { items }
-                    </div>
-                    <Loader loading={ this.state.loading } />
-                    { this.state.nextPage ? paginationButton : null }
+            <div className="media-list mt-3">
+                <EmptyList items={ this.state.items } loading={ this.state.loading } />
+                <div className="row">
+                    { items }
                 </div>
+                <Loader loading={ this.state.loading } />
+                { this.state.nextPage ? paginationButton : null }
             </div>
         )
     }

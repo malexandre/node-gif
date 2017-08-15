@@ -6,6 +6,7 @@ import './styles.scss'
 import EmojiItem from './modules/emoji-item'
 import GifItem from './modules/gif-item'
 import MediaList from './modules/media-list'
+import MediaSearch from './modules/media-search'
 import NavBar from './modules/navbar'
 
 class App extends Component {
@@ -24,13 +25,14 @@ class App extends Component {
 
     render() {
         const mediaList = (url, item) => <MediaList url={ url } item={ item } auth={ this.state.auth } />
+        const mediaSearch = (url, item) => <MediaSearch url={ url } item={ item } auth={ this.state.auth } />
 
         return (
             <div className="container">
                 <NavBar auth={ this.state.auth } onLoginSubmit={ this.onLoginSubmit } />
-                <Route path="/" exact render={ () => mediaList('/api/gifs/search', GifItem) } />
+                <Route path="/" exact render={ () => mediaSearch('/api/gifs/search', GifItem) } />
                 <Route path="/fav-gifs" exact render={ () => mediaList('/api/gifs/favorite', GifItem) } />
-                <Route path="/emojis" exact render={ () => mediaList('/api/emojis/search', EmojiItem) } />
+                <Route path="/emojis" exact render={ () => mediaSearch('/api/emojis/search', EmojiItem) } />
                 <Route path="/fav-emojis" exact render={ () => mediaList('/api/emojis/favorite', EmojiItem) } />
             </div>
         )
