@@ -36,6 +36,7 @@ class MediaList extends Component {
         if (response.status >= 200 && response.status < 300) {
             return response
         }
+
         const error = new Error(response.statusText)
         error.response = response
         throw error
@@ -83,7 +84,8 @@ class MediaList extends Component {
                 setTimeout(() => localStorage.setItem(this.getLocalStorageKey(), JSON.stringify(this.state)))
             })
             .catch((err) => {
-                this.setState({ loading: false, error: `Server error: ${err.response.statusText}` })
+                const message = err.response ? err.response.statusText : err
+                this.setState({ loading: false, error: `Server error: ${message}` })
             })
     }
 
@@ -117,7 +119,8 @@ class MediaList extends Component {
                 this.forceUpdate()
             })
             .catch((err) => {
-                this.setState({ error: `Server error: ${err.response.statusText}` })
+                const message = err.response ? err.response.statusText : err
+                this.setState({ error: `Server error: ${message}` })
             })
     }
 
