@@ -20,7 +20,7 @@ const giphySearch = async(query, offset) => {
     }
 
     return {
-        items: resGiphy.data,
+        items: resGiphy.data.map((item) => Object.assign({}, item, { type: 'gifs' })),
         more: resGiphy.pagination.total_count > resGiphy.pagination.count + resGiphy.pagination.offset
     }
 }
@@ -36,7 +36,7 @@ const emojiSearch = (query, offset) => {
         }
 
         if (match) {
-            emojis.push(Object.assign({}, emojilib.lib[key], { id: key }))
+            emojis.push(Object.assign({}, emojilib.lib[key], { id: key, type: 'emojis' }))
         }
     })
 
