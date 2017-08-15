@@ -26,15 +26,32 @@ class MediaList extends Component {
         this.onNextPageClick = this.onNextPageClick.bind(this)
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.auth !== this.props.auth) {
+            this.onFilterSubmit('')
+        }
+    }
+
     getLocalStorageKey() {
-        const fakeLogin = localStorage.getItem('fake-login') || ''
+        const fakeLogin = this.props.auth || ''
         return fakeLogin + this.props.url
     }
 
     fetchNewQuery(url) {
         this.setState({ loading: true })
 
-        fetch(url)
+        let params
+        if (this.props.auth) {
+            params = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-user-token': this.props.auth
+                }
+            }
+        }
+
+        fetch(url, params)
             .then((res) => {
                 return res.json()
             })
@@ -54,7 +71,7 @@ class MediaList extends Component {
 
     onFilterSubmit(filter) {
         if (filter.trim() !== this.state.filter.trim()) {
-            this.setState({ filter, items: [] })
+            this.setState({ filter, items: [], nextPage: undefined, loading: false })
             this.fetchNewQuery(`${this.props.url}/${filter.trim()}`)
         }
     }
@@ -77,7 +94,7 @@ class MediaList extends Component {
 
         return (
             <div className="gif-list">
-                <SearchBar onFilterSubmit={ this.onFilterSubmit } init={ this.state.filter } />
+                <SearchBar onFilterSubmit={ this.onFilterSubmit } init={ this.state.filter } auth={ this.props.auth } />
                 <div className="mt-3">
                     <EmptyList items={ this.state.items } loading={ this.state.loading } />
                     <div className="row">
@@ -92,6 +109,7 @@ class MediaList extends Component {
 }
 
 MediaList.propTypes = {
+    auth: PropTypes.string,
     item: PropTypes.func,
     url: PropTypes.string
 }

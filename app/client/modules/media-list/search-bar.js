@@ -11,6 +11,12 @@ class SearchBar extends Component {
         this.onFilterSubmit = this.onFilterSubmit.bind(this)
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.auth !== this.props.auth) {
+            this.setState({ filter: '' })
+        }
+    }
+
     onFilterSubmit(event) {
         event.preventDefault()
 
@@ -45,6 +51,7 @@ class SearchBar extends Component {
 }
 
 SearchBar.propTypes = {
+    auth: PropTypes.string,
     init: PropTypes.string,
     onFilterSubmit: PropTypes.func
 }
