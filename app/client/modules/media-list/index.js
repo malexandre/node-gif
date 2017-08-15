@@ -10,7 +10,7 @@ class MediaList extends Component {
     constructor(props) {
         super(props)
 
-        const initialState = localStorage.getItem(this.props.url)
+        const initialState = localStorage.getItem(this.getLocalStorageKey())
 
         this.state =
             initialState && initialState !== '' ?
@@ -24,6 +24,11 @@ class MediaList extends Component {
 
         this.onFilterSubmit = this.onFilterSubmit.bind(this)
         this.onNextPageClick = this.onNextPageClick.bind(this)
+    }
+
+    getLocalStorageKey() {
+        const fakeLogin = localStorage.getItem('fake-login') || ''
+        return fakeLogin + this.props.url
     }
 
     fetchNewQuery(url) {
@@ -40,7 +45,7 @@ class MediaList extends Component {
                     nextPage: json.nextPage
                 })
 
-                setTimeout(() => localStorage.setItem(this.props.url, JSON.stringify(this.state)))
+                setTimeout(() => localStorage.setItem(this.getLocalStorageKey(), JSON.stringify(this.state)))
             })
             .catch(() => {
                 this.setState({ loading: false })
