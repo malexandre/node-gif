@@ -112,7 +112,10 @@ class MediaList extends Component {
             })
         })
             .then((res) => this.checkFetchStatus(res))
-            .then(() => (item.favorite = !item.favorite))
+            .then(() => {
+                item.favorite = !item.favorite
+                this.forceUpdate()
+            })
             .catch((err) => {
                 this.setState({ error: `Server error: ${err.response.statusText}` })
             })
