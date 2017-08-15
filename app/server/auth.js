@@ -13,7 +13,7 @@ module.exports.authMiddleware = (req, res, next) => {
 module.exports.authWrapper = function(handler) {
     return async function authenticated(req, res) {
         if (!res.locals.user) {
-            res.sendStatus(403)
+            res.sendStatus(401)
             return
         }
 

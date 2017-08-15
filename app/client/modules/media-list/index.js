@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import EmptyList from './empty-list'
+import Error from './error'
 import Loader from './loader'
 
 class MediaList extends Component {
@@ -26,8 +27,18 @@ class MediaList extends Component {
         return {
             items: [],
             loading: false,
-            nextPage: undefined
+            nextPage: undefined,
+            error: undefined
         }
+    }
+
+    checkFetchStatus(response) {
+        if (response.status >= 200 && response.status < 300) {
+            return response
+        }
+        const error = new Error(response.statusText)
+        error.response = response
+        throw error
     }
 
     componentWillReceiveProps(nextProps) {
@@ -46,7 +57,7 @@ class MediaList extends Component {
     }
 
     fetchNewQuery(url, auth) {
-        this.setState({ loading: true })
+        this.setState({ loading: true, error: undefined })
 
         let params
         if (auth) {
@@ -60,9 +71,8 @@ class MediaList extends Component {
         }
 
         fetch(url, params)
-            .then((res) => {
-                return res.json()
-            })
+            .then((res) => this.checkFetchStatus(res))
+            .then((res) => res.json())
             .then((json) => {
                 this.setState({
                     items: this.state.items.concat(json.items),
@@ -72,9 +82,8 @@ class MediaList extends Component {
 
                 setTimeout(() => localStorage.setItem(this.getLocalStorageKey(), JSON.stringify(this.state)))
             })
-            .catch(() => {
-                this.setState({ loading: false })
-                // Todo display error
+            .catch((err) => {
+                this.setState({ loading: false, error: `Server error: ${err.response.statusText}` })
             })
     }
 
@@ -86,7 +95,8 @@ class MediaList extends Component {
 
     onFavoriteClick(item) {
         if (!this.props.auth) {
-            return // Todo display error
+            this.setState({ error: 'You must be authentified to save a favorite' })
+            return
         }
 
         fetch(`/api/${item.type}/favorite`, {
@@ -100,7 +110,12 @@ class MediaList extends Component {
                 meta: item,
                 type: item.type
             })
-        }).then(() => (item.favorite = !item.favorite))
+        })
+            .then((res) => this.checkFetchStatus(res))
+            .then(() => (item.favorite = !item.favorite))
+            .catch((err) => {
+                this.setState({ error: `Server error: ${err.response.statusText}` })
+            })
     }
 
     render() {
@@ -117,6 +132,7 @@ class MediaList extends Component {
 
         return (
             <div className="media-list mt-3">
+                <Error error={ this.state.error } />
                 <EmptyList items={ this.state.items } loading={ this.state.loading } />
                 <div className="row">
                     { items }
