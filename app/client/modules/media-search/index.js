@@ -29,11 +29,13 @@ class MediaSearch extends Component {
 
     onFilterSubmit(filter) {
         if (filter.trim() !== this.state.filter.trim()) {
-            this.setState({ filter, url: `${this.props.url}/${filter.trim()}` })
+            if (filter.trim()) {
+                this.setState({ filter, url: `${this.props.url}/${filter.trim()}` })
+            }
+            else {
+                this.setState({ filter: '', url: '' })
+            }
             setTimeout(() => localStorage.setItem(this.getLocalStorageKey(), JSON.stringify(this.state)))
-        }
-        else {
-            this.setState({ filter: '', url: '' })
         }
     }
 
