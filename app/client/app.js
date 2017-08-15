@@ -29,7 +29,9 @@ class App extends Component {
             <div className="container">
                 <NavBar auth={ this.state.auth } onLoginSubmit={ this.onLoginSubmit } />
                 <Route path="/" exact render={ () => mediaList('/api/gifs/search', GifItem) } />
+                <Route path="/fav-gifs" exact render={ () => mediaList('/api/gifs/favorite', GifItem) } />
                 <Route path="/emojis" exact render={ () => mediaList('/api/emojis/search', EmojiItem) } />
+                <Route path="/fav-emojis" exact render={ () => mediaList('/api/emojis/favorite', EmojiItem) } />
             </div>
         )
     }

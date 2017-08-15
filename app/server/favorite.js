@@ -36,7 +36,7 @@ module.exports.listFavoritesHandler = async(req, res) => {
     }
 
     res.json({
-        items: items,
+        items: items.map((item) => item.meta),
         nextPage: (items || []).length > 20 ? nextPage : undefined
     })
 }

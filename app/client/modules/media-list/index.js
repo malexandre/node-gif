@@ -93,7 +93,7 @@ class MediaList extends Component {
         )
 
         return (
-            <div className="gif-list">
+            <div className="media-list">
                 <SearchBar onFilterSubmit={ this.onFilterSubmit } init={ this.state.filter } auth={ this.props.auth } />
                 <div className="mt-3">
                     <EmptyList items={ this.state.items } loading={ this.state.loading } />
