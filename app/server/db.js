@@ -13,9 +13,16 @@ module.exports.initDb = () => {
     )
 }
 
-module.exports.saveFavorite = (id, type, meta, userToken) => {
-    db.run('INSERT OR REPLACE INTO Media VALUES (?, ?, ?)', id, type, JSON.stringify(meta))
-    db.run('INSERT OR REPLACE INTO Favorites VALUES (?, ?, ?)', id, type, userToken)
+module.exports.toggleFavorite = async(id, type, meta, userToken) => {
+    const alreadyFavorite = await module.exports.areFavorites(type, userToken, [id])
+
+    if (alreadyFavorite.length === 1) {
+        db.run('DELETE FROM Favorites WHERE mediaId = ? AND type = ? AND userToken = ?', id, type, userToken)
+    }
+    else {
+        db.run('INSERT OR REPLACE INTO Media VALUES (?, ?, ?)', id, type, JSON.stringify(meta))
+        db.run('INSERT OR REPLACE INTO Favorites VALUES (?, ?, ?)', id, type, userToken)
+    }
 }
 
 module.exports.loadFavorites = (type, userToken, limit = 20, offset = 0) => {

@@ -18,7 +18,7 @@ module.exports.saveFavoriteHandler = (req, res) => {
         return
     }
 
-    db.saveFavorite(req.body.id, req.params.type, req.body.meta, res.locals.user)
+    db.toggleFavorite(req.body.id, req.params.type, req.body.meta, res.locals.user)
     res.sendStatus(200)
 }
 
