@@ -1,3 +1,4 @@
+import ClassNames from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { Route, Link } from 'react-router-dom'
@@ -6,11 +7,9 @@ const NavItem = (props) => {
     return (
         <Route path={ props.to } exact>
             { ({ match }) => {
-                let classes = 'nav-item'
-
-                if (match) {
-                    classes += ' active'
-                }
+                const classes = ClassNames('nav-item', {
+                    'active': match
+                })
 
                 return (
                     <li className={ classes }>
