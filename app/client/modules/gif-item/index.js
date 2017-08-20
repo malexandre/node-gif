@@ -1,11 +1,17 @@
+import ClassNames from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
 
 import './gif-item.scss'
 
 const GifItem = (props) => {
+    const classes = ClassNames('btn', 'btn-sm', {
+        'btn-warning': props.item.favorite,
+        'btn-outline-warning': !props.item.favorite
+    })
+
     const getUrl = (gif) => {
-        const fixedHeight = gif.images.fixed_height
+        const fixedHeight = (gif.images || {}).fixed_height || {}
 
         return fixedHeight.mp4 || fixedHeight.webp || fixedHeight.gif
     }
@@ -18,8 +24,7 @@ const GifItem = (props) => {
                 </video>
                 <div className="card-body">
                     { props.auth ?
-                        <button className="btn btn-sm btn-warning mr-3"
-                            onClick={ () => props.onFavoriteClick(props.item) }>
+                        <button className={ classes } onClick={ () => props.onFavoriteClick(props.item) }>
                               Favorite
                         </button> :
                         null }
