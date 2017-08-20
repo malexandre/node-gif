@@ -20,7 +20,7 @@ test('EmptyList does not display an alert if props.loading is true', () => {
 })
 
 test('EmptyList does not display an alert if props.items is not empty', () => {
-    const item = shallow(<EmptyList items={ [0] } />)
+    const item = shallow(<EmptyList items={ [{}] } />)
 
     expect(item.type()).toEqual(null)
 })
