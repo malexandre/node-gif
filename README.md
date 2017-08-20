@@ -1,8 +1,8 @@
 # What is this?
 
-Just a little project to get familiar with Node.js. Simple server with listing of Gif from Giphy and Emojis from [emojilib](https://github.com/muan/emojilib), with favorites management.
+Just a little project to show off Node.js and ReactJS. Simple server with listing of Gif from Giphy and Emojis from [emojilib](https://github.com/muan/emojilib), with favorites management.
 
-I alse made a basic React client with Bootstrap to get familiar with react and webpack too.
+GUI has been made with bootstrap (nothing fancy, just basic components). Test with Jest & Enzyme.
 
 
 # How to test the project
