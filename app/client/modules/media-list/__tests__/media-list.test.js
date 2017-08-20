@@ -79,7 +79,7 @@ beforeAll(() => {
                             { id: 1, type: 'test' },
                             { id: 2, type: 'test' },
                             { id: 3, type: 'test' },
-                            { id: 4, type: 'test' }
+                            { id: 4, type: 'error' }
                         ],
                         nextPage: 'nextpage'
                     })
@@ -183,5 +183,59 @@ test('MediaList should manage props updates for url', (done) => {
         },
         done,
         false
+    )
+})
+
+test('MediaList should manage favorite click error if no auth', (done) => {
+    const item = mount(<MediaList item={ FakeItem } url="test" />)
+
+    timeout(
+        () => {
+            expect(formatStatus.mock.calls.length).toBe(0)
+            expect(item.find(FakeItem).first().hasClass('favorite')).toEqual(false)
+            item.find(FakeItem).first().simulate('click')
+
+            timeout(() => {
+                expect(formatStatus.mock.calls.length).toBe(0)
+                expect(item.state('error')).toEqual('You must be authentified to save a favorite')
+                expect(item.find(FakeItem).first().hasClass('favorite')).toEqual(false)
+            }, done)
+        },
+        done,
+        false
+    )
+})
+
+test('MediaList should manage favorite click error if server error', (done) => {
+    const item = mount(<MediaList item={ FakeItem } url="test" auth="test" />)
+
+    timeout(
+        () => {
+            expect(formatStatus.mock.calls.length).toBe(0)
+            expect(item.find(FakeItem).first().hasClass('favorite')).toEqual(false)
+            item.find(FakeItem).last().simulate('click')
+
+            timeout(() => {
+                expect(formatStatus.mock.calls.length).toBe(1)
+                expect(item.state('error')).toEqual('Server error: Test error 401')
+                expect(item.find(FakeItem).first().hasClass('favorite')).toEqual(false)
+            }, done)
+        },
+        done,
+        false
+    )
+})
+
+test('MediaList should manage server error on list fetch', (done) => {
+    const item = mount(<MediaList item={ FakeItem } url="error" auth="test" />)
+
+    timeout(
+        () => {
+            expect(formatResolve.mock.calls.length).toBe(0)
+            expect(formatStatus.mock.calls.length).toBe(1)
+            expect(item.state('error')).toEqual('Server error: Test error 404')
+            expect(item.state('items').length).toEqual(0)
+        },
+        done
     )
 })

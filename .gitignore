@@ -2,3 +2,4 @@ favorites.db
 node_modules
 app/client/dist
 app/server/config.js
+coverage
